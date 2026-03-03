@@ -1,0 +1,172 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  STUDENT
+  FACULTY
+  ADMIN
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum MeetingStatus {
+  SCHEDULED
+  COMPLETED
+}
+
+model User {
+  user_id       Int      @id @default(autoincrement())
+  username      String
+  password_hash String
+  role          UserRole
+  ref_id        Int?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+}
+
+model AcademicYear {
+  academic_year_id Int      @id @default(autoincrement())
+  year_name        String
+  semester         Int
+  is_active        Boolean  @default(false)
+  created_at       DateTime @default(now())
+
+  students        Student[]
+  assignedProjects AssignedProject[]
+}
+
+model Student {
+  student_id        Int      @id @default(autoincrement())
+  student_name      String
+  phone             String?
+  email             String?
+  academic_year_id  Int?
+  description       String?
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  academic_year     AcademicYear?          @relation(fields: [academic_year_id], references: [academic_year_id])
+  groupMembers      ProjectGroupMember[]
+  meetingAttendance ProjectMeetingAttendance[]
+  documents         ProjectDocument[]       @relation("DocumentUploadedBy")
+}
+
+model Staff {
+  staff_id    Int      @id @default(autoincrement())
+  staff_name  String
+  phone       String?
+  email       String?
+  description String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  assignedProjects AssignedProject[]
+}
+
+model AssignedProject {
+  assignment_id    Int      @id @default(autoincrement())
+  staff_id         Int
+  academic_year_id Int
+  subject_name     String
+  max_members      Int
+  created_at       DateTime @default(now())
+
+  staff         Staff         @relation(fields: [staff_id], references: [staff_id])
+  academic_year AcademicYear @relation(fields: [academic_year_id], references: [academic_year_id])
+  projectGroups ProjectGroup[]
+}
+
+model ProjectGroup {
+  project_group_id   Int            @id @default(autoincrement())
+  project_group_name String
+  assigned_project_id Int?
+  project_title       String?
+  project_description String?
+  approval_status     ApprovalStatus @default(PENDING)
+  created_at          DateTime       @default(now())
+  updated_at          DateTime       @updatedAt
+
+  assigned_project AssignedProject?   @relation(fields: [assigned_project_id], references: [assignment_id])
+  members          ProjectGroupMember[]
+  meetings         ProjectMeeting[]
+  documents        ProjectDocument[]
+  result           ProjectResult?
+}
+
+model ProjectGroupMember {
+  project_group_member_id Int      @id @default(autoincrement())
+  project_group_id        Int
+  student_id              Int
+  is_group_leader         Boolean  @default(false)
+  created_at              DateTime @default(now())
+
+  project_group ProjectGroup @relation(fields: [project_group_id], references: [project_group_id])
+  student       Student      @relation(fields: [student_id], references: [student_id])
+
+  @@unique([project_group_id, student_id])
+}
+
+model ProjectMeeting {
+  project_meeting_id Int      @id @default(autoincrement())
+  project_group_id   Int
+  meeting_datetime   DateTime
+  meeting_purpose    String?
+  meeting_notes      String?
+  status             MeetingStatus @default(SCHEDULED)
+  created_at         DateTime      @default(now())
+
+  project_group ProjectGroup             @relation(fields: [project_group_id], references: [project_group_id])
+  attendance    ProjectMeetingAttendance[]
+}
+
+model ProjectMeetingAttendance {
+  attendance_id     Int      @id @default(autoincrement())
+  project_meeting_id Int
+  student_id         Int
+  is_present         Boolean  @default(false)
+  remarks            String?
+
+  meeting ProjectMeeting @relation(fields: [project_meeting_id], references: [project_meeting_id])
+  student Student        @relation(fields: [student_id], references: [student_id])
+
+  @@unique([project_meeting_id, student_id])
+}
+
+model ProjectDocument {
+  document_id      Int      @id @default(autoincrement())
+  project_group_id Int
+  document_name    String?
+  file_path        String?
+  uploaded_by      Int?
+  uploaded_at      DateTime @default(now())
+
+  project_group     ProjectGroup @relation(fields: [project_group_id], references: [project_group_id])
+  uploaded_by_student Student?   @relation("DocumentUploadedBy", fields: [uploaded_by], references: [student_id])
+}
+
+model ProjectResult {
+  result_id       Int      @id @default(autoincrement())
+  project_group_id Int      @unique
+  marks           Int?
+  remarks         String?
+  created_at      DateTime @default(now())
+
+  project_group ProjectGroup @relation(fields: [project_group_id], references: [project_group_id])
+}
+
