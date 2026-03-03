@@ -1,6 +1,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 export default async function FacultyDashboard() {
   const cookieStore = await cookies();
@@ -42,6 +43,18 @@ export default async function FacultyDashboard() {
   return (
     <div>
       <h1 className="text-2xl font-semibold text-gray-900">Faculty Dashboard</h1>
+
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Link href="/faculty/assigned-projects" className="px-3 py-2 rounded-md bg-white border border-gray-200 text-sm text-gray-700 hover:bg-gray-50">
+          Assigned Projects
+        </Link>
+        <Link href="/faculty/project-groups" className="px-3 py-2 rounded-md bg-white border border-gray-200 text-sm text-gray-700 hover:bg-gray-50">
+          Project Groups
+        </Link>
+        <Link href="/faculty/meetings" className="px-3 py-2 rounded-md bg-white border border-gray-200 text-sm text-gray-700 hover:bg-gray-50">
+          Meetings
+        </Link>
+      </div>
 
       <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((item) => (

@@ -64,6 +64,15 @@ export default async function StudentDashboard() {
         </Link>
       </div>
 
+      <div className="flex flex-wrap gap-3">
+        <Link href="/student/groups/create" className="px-3 py-2 rounded-md bg-white border border-gray-200 text-sm text-gray-700 hover:bg-gray-50">
+          Create/Join Group
+        </Link>
+        <Link href="/student/profile" className="px-3 py-2 rounded-md bg-white border border-gray-200 text-sm text-gray-700 hover:bg-gray-50">
+          My Profile
+        </Link>
+      </div>
+
       {/* Quick Stats / Status */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
         <div className="bg-white overflow-hidden shadow rounded-lg p-5">

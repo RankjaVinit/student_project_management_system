@@ -15,10 +15,10 @@ export default async function AdminDashboard() {
   ]);
 
   const stats = [
-    { name: 'Total Students', stat: studentsCount, icon: 'Users', color: 'bg-blue-500' },
-    { name: 'Total Faculty', stat: staffCount, icon: 'UserGroup', color: 'bg-green-500' },
-    { name: 'Active Projects', stat: activeProjectsCount, icon: 'FolderOpen', color: 'bg-indigo-500' },
-    { name: 'Pending Approvals', stat: pendingProjectsCount, icon: 'Clock', color: 'bg-yellow-500' },
+    { name: 'Total Students', stat: studentsCount, icon: 'Users', color: 'bg-blue-500', href: '/admin/students' },
+    { name: 'Total Faculty', stat: staffCount, icon: 'UserGroup', color: 'bg-green-500', href: '/admin/staff' },
+    { name: 'Active Projects', stat: activeProjectsCount, icon: 'FolderOpen', color: 'bg-indigo-500', href: '/admin/projects' },
+    { name: 'Pending Approvals', stat: pendingProjectsCount, icon: 'Clock', color: 'bg-yellow-500', href: '/admin/projects' },
   ];
 
   return (
@@ -53,9 +53,9 @@ export default async function AdminDashboard() {
             </div>
             <div className="bg-gray-50 px-5 py-3">
               <div className="text-sm">
-                <a href="#" className="font-medium text-cyan-700 hover:text-cyan-900">
+                <Link href={item.href} className="font-medium text-cyan-700 hover:text-cyan-900">
                   View all
-                </a>
+                </Link>
               </div>
             </div>
           </div>

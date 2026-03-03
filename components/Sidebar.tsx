@@ -30,26 +30,32 @@ function SidebarContent({ role }: SidebarProps) {
     },
     { href: "/admin/staff", label: "Staff", icon: "Users" },
     { href: "/admin/students", label: "Students", icon: "UserPlus" },
+    { href: "/admin/projects", label: "Projects", icon: "Folder" },
     {
       href: "/admin/assigned-projects",
       label: "Assigned Projects",
       icon: "Briefcase",
     },
-    // { href: '/admin/reports', label: 'Reports', icon: 'BarChart' },
+    { href: "/admin/reports", label: "Reports", icon: "BarChart" },
+    { href: "/admin/profile", label: "Profile", icon: "User" },
   ];
 
   const facultyLinks = [
     { href: "/faculty/dashboard", label: "Dashboard", icon: "Home" },
+    {
+      href: "/faculty/assigned-projects",
+      label: "Assigned Projects",
+      icon: "Briefcase",
+    },
     { href: "/faculty/project-groups", label: "Project Groups", icon: "Users" },
     { href: "/faculty/meetings", label: "Meetings", icon: "Clock" },
-    // { href: '/faculty/profile', label: 'Profile', icon: 'User' },
+    { href: "/faculty/profile", label: "Profile", icon: "User" },
   ];
 
   const studentLinks = [
     { href: "/student/dashboard", label: "Dashboard", icon: "Home" },
-    { href: "/student/groups/create", label: "Join Group", icon: "Users" },
-    // { href: '/student/meetings', label: 'My Meetings', icon: 'Clock' },
-    // { href: '/student/documents', label: 'Documents', icon: 'FileText' },
+    { href: "/student/groups/create", label: "Create/Join Group", icon: "Users" },
+    { href: "/student/profile", label: "Profile", icon: "User" },
   ];
 
   let links: { href: string; label: string; icon: string }[] = [];
@@ -72,7 +78,7 @@ function SidebarContent({ role }: SidebarProps) {
             </div>
             <nav className="mt-8 flex-1 px-2 bg-white space-y-1">
               {links.map((item) => {
-                const isActive = pathname.startsWith(item.href);
+                const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
                 return (
                   <Link
                     key={item.label}
@@ -99,6 +105,7 @@ function SidebarContent({ role }: SidebarProps) {
                       {item.icon === "Users" && "👥"}
                       {item.icon === "UserPlus" && "👤"}
                       {item.icon === "Briefcase" && "💼"}
+                      {item.icon === "Folder" && "📁"}
                       {item.icon === "Clock" && "⏰"}
                       {item.icon === "FileText" && "📄"}
                       {item.icon === "BarChart" && "📊"}

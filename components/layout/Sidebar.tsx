@@ -17,24 +17,25 @@ interface SidebarProps {
 
 const studentMenuItems: SidebarItem[] = [
   { label: "Dashboard", href: "/student/dashboard" },
-  { label: "Project", href: "/student/projects" },
+  { label: "Create/Join Group", href: "/student/groups/create" },
   { label: "Profile", href: "/student/profile" },
 ];
 
 const facultyMenuItems: SidebarItem[] = [
   { label: "Dashboard", href: "/faculty/dashboard" },
-  { label: "Meeting", href: "/faculty/meetings" },
+  { label: "Project Groups", href: "/faculty/project-groups" },
+  { label: "Meetings", href: "/faculty/meetings" },
   { label: "Assigned Projects", href: "/faculty/assigned-projects" },
   { label: "Profile", href: "/faculty/profile" },
 ];
 
 const adminMenuItems: SidebarItem[] = [
   { label: "Dashboard", href: "/admin/dashboard" },
+  { label: "Academic Years", href: "/admin/academic-years" },
+  { label: "Assigned Projects", href: "/admin/assigned-projects" },
   { label: "Students", href: "/admin/students" },
   { label: "Staff", href: "/admin/staff" },
   { label: "Projects", href: "/admin/projects" },
-  { label: "Project Types", href: "/admin/project-types" },
-  { label: "Academic Years", href: "/admin/academic-years" },
   { label: "Reports", href: "/admin/reports" },
   { label: "Profile", href: "/admin/profile" },
 ];
